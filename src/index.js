@@ -11,7 +11,7 @@ export class ScrollSpy extends Component {
   getChildContext() {
     return {
       activeId: this.state.activeId,
-      add: this.spy,
+      add: this.add,
       remove: this.remove
     };
   }
