@@ -1,6 +1,6 @@
 {
   "name": "preact-scrollspy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Scrollspy component for Preact",
   "main": "lib/index.js",
   "files": [
