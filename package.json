@@ -1,0 +1,29 @@
+{
+  "name": "preact-scrollspy",
+  "version": "1.0.0",
+  "description": "Scrollspy component for Preact",
+  "main": "lib/index.js",
+  "files": [
+    "es",
+    "lib",
+    "umd"
+  ],
+  "scripts": {
+    "build": "nwb build-web-module",
+    "clean": "nwb clean-module",
+    "test": "nwb test",
+    "test:coverage": "nwb test --coverage",
+    "test:watch": "nwb test --server"
+  },
+  "dependencies": {
+    "preact": "^7.2.0",
+    "scrollmonitor": "^1.2.3"
+  },
+  "devDependencies": {
+    "nwb": "0.15.x"
+  },
+  "author": "Efflam Daniel",
+  "homepage": "",
+  "license": "MIT",
+  "repository": "https://github.com/efflam/preact-scrollspy.git"
+}
