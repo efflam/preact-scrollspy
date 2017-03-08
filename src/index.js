@@ -2,7 +2,6 @@ import { h, Component } from "preact";
 import scrollMonitor from "scrollmonitor";
 
 export class ScrollSpy extends Component {
-  items = {};
   watchers = {};
 
   state = {
@@ -12,15 +11,16 @@ export class ScrollSpy extends Component {
   getChildContext() {
     return {
       activeId: this.state.activeId,
-      spy: this.spy
+      add: this.spy,
+      remove: this.remove
     };
   }
 
   componentWillMount() {
-    // TODO: clean up
+    Object.keys(this.watchers).map(this.remove);
   }
 
-  spy = (id, el) => {
+  add = (id, el) => {
     const { offset } = this.props;
     const watcher = scrollMonitor.create(el, offset);
     watcher.stateChange(() => {
@@ -28,11 +28,17 @@ export class ScrollSpy extends Component {
         this.setActive(id);
       }
     });
-    this.items[id] = el;
+    if (this.watchers[id]) this.remove(id);
     this.watchers[id] = watcher;
   };
 
-  setActive(id) {
+  remove = id => {
+    if(!this.watchers[id]) return;
+    this.watchers[id].destroy();
+    delete this.watchers[id];
+  };
+
+  setActive = id => {
     if (id !== this.state.activeId) {
       this.setState({
         activeId: id
@@ -41,7 +47,7 @@ export class ScrollSpy extends Component {
         history.pushState(null, null, "#" + id);
       }
     }
-  }
+  };
 
   render({ children }, { activeId }) {
     return children[0];
@@ -53,9 +59,13 @@ ScrollSpy.defaultProps = {
 };
 
 export class ScrollSpyItem extends Component {
-  render({ children, id }, state, { spy }) {
+  componentWillMount() {
+    this.context.remove(this.props.id);
+  }
+
+  render({ children, id }, state, { add }) {
     return (
-      <div id={id} ref={el => spy(id, el)}>
+      <div id={id} ref={el => add(id, el)}>
         {children}
       </div>
     );
