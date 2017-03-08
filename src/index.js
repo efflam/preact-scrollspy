@@ -16,11 +16,8 @@ export class ScrollSpy extends Component {
     };
   }
 
-  componentWillMount() {
-    Object.keys(this.watchers).map(this.remove);
-  }
-
   add = (id, el) => {
+    if (this.watchers[id]) return;
     const { offset } = this.props;
     const watcher = scrollMonitor.create(el, offset);
     watcher.stateChange(() => {
@@ -28,12 +25,11 @@ export class ScrollSpy extends Component {
         this.setActive(id);
       }
     });
-    if (this.watchers[id]) this.remove(id);
     this.watchers[id] = watcher;
   };
 
   remove = id => {
-    if(!this.watchers[id]) return;
+    if (!this.watchers[id]) return;
     this.watchers[id].destroy();
     delete this.watchers[id];
   };
